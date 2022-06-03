@@ -6,7 +6,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-
+import android.widget.*
 import com.example.project.model.patientsmodel
 
 
@@ -43,9 +43,15 @@ class DatabaseHelper (context: Context, factory: SQLiteDatabase.CursorFactory?) 
     }
 
 
-    override fun onCreate(db: SQLiteDatabase?) {
-      val query = ("CREATE TABLE" + Patients + "(" + PatientSSNO +" INT PRIMARY KEY , " + PatientName + "TEXT" + DEPNAME + " TEXT" + DoctorName + "TEXT" +")")
-      db?.execSQL(query)
+    override fun onCreate(p0: SQLiteDatabase?) {
+        val createtable = "CREATE TABLE" + Patients+
+                "(" + PatientSSNO + " INTEGER PRIMARY KEY , " +
+                PatientName + "TEXT ," +
+                DEPNAME + "TEXT ," +
+                DoctorName + "TEXT ," +
+                DOB +"TEXT ," +
+                POR+"TEXT)"
+      p0!!.execSQL(createtable);
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
@@ -77,9 +83,10 @@ fun insertpatient (patient:patientsmodel):Boolean //insert
     val success = db.insert(Patients,null,values)
     db.close()
     return (Integer.parseInt("$success") != -1 )
+
 }
 
-    fun getpatients():List<patientsmodel> //select all
+    fun getpatients(PSSNO:Int):List<patientsmodel> //select all
     {
 
         val patientlist = ArrayList<patientsmodel>()

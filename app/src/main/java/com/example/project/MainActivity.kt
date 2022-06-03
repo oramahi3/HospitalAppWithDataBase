@@ -1,6 +1,6 @@
 package com.example.project
-
 import DatabaseHelper
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.project.model.patientsmodel
-
-
 class MainActivity : AppCompatActivity() {
-    var dbhandler: DatabaseHelper? = null
-    var patientlist: List<patientsmodel> = ArrayList<patientsmodel>()
+  private var DBhelper : DatabaseHelper ?= null
+
+    private var patientlist: List<patientsmodel> = ArrayList<patientsmodel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         var flag1: String
         var flag2: String
         var flagGender: String
-        dbhandler = DatabaseHelper(this, null)
+
+
 
         val P_NAME: EditText = findViewById(R.id.editName)
         val P_SSNO: EditText = findViewById(R.id.editIdNum)
@@ -98,15 +98,31 @@ class MainActivity : AppCompatActivity() {
             patient.debname = spinnerDept.selectedItem.toString()
             patient.docname = spinnerDr.selectedItem.toString()
             patient.placeofresidence = Place_of_residence.text.toString()
-            success = dbhandler?.insertpatient(patient) as Boolean
-            if(success)
+              success = DBhelper?.insertpatient(patient) == true
+
+        if(success)
                 Toast.makeText(this,"Inserted Successfully" , Toast.LENGTH_SHORT).show()
             else
-                Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
+               Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
 
 
             val intent = Intent(this@MainActivity, SecondActivity::class.java)
             startActivity(intent)
+        }
+ val delete : Button = findViewById(R.id.delete)
+        delete.setOnClickListener()
+        {
+            val ssno = P_SSNO.text.toString().toInt()
+            if(deletep(ssno) == true)
+                Toast.makeText(this,"Deleted successfully",Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this,"Something wrong and patient cant be deleted",Toast.LENGTH_SHORT).show()
+//val update : Button = findViewById(R.id.update)
+//            update.setOnClickListener()
+//            {
+//                 val patients : patientsmodel = DBhelper!!.getpatients(intent.getIntExtra("id",0))
+//
+//            }
         }
 //        confirm.setOnClickListener()
 //        {
@@ -119,15 +135,17 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 // the implementation of the functions that should be assigned to buttons
-    private fun getpatients()//(ListPatients)
+//    private fun getpatients()//(ListPatients)
+//    {
+//     patientlist = DBhelper!!.getpatients(p)
+//
+//    }
+     fun deletep(SSnumber : Int ):Boolean
     {
-     patientlist = dbhandler!!.getpatients()
+        val SSnumber= -1
+        val deleted = DBhelper?.deletepatient(SSnumber) as Boolean
+        return deleted
+    }
 
-    }
-    private fun deletep(SSnumber : Int):Boolean
-    {
-        return dbhandler!!.deletepatient(SSnumber)
-    }
-//    private fun
 
 }
