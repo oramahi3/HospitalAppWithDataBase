@@ -87,18 +87,18 @@ class MainActivity : AppCompatActivity() {
 
         val confirm: Button = findViewById(R.id.btnConfirm)
         confirm.setOnClickListener() {
-//            val success : Boolean
-//            val patient : patientsmodel = patientsmodel()
-//            patient.pname = P_NAME.text.toString()
-//            patient.pssno = P_SSNO.text.toString().toInt()
-//            //patient.docname =
-//            patient.debname = spinnerDept.selectedItem.toString()
-//            patient.docname = spinnerDr.selectedItem.toString()
-//            success = dbhandler?.insertpatient(patient) as Boolean
-//            if(success)
+            val success : Boolean
+            val patient : patientsmodel = patientsmodel()
+            patient.pname = P_NAME.text.toString()
+            patient.pssno = P_SSNO.text.toString().toInt()
+            //patient.docname =
+            patient.debname = spinnerDept.selectedItem.toString()
+            patient.docname = spinnerDr.selectedItem.toString()
+            success = dbhandler?.insertpatient(patient) as Boolean
+            if(success)
                 Toast.makeText(this,"Inserted Successfully" , Toast.LENGTH_SHORT).show()
-//            else
-//                Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
             val intent = Intent(this@MainActivity, SecondActivity::class.java)
             startActivity(intent)
         }
