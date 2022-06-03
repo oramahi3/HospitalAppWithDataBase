@@ -5,4 +5,7 @@ class patientsmodel {
     var pname :String =  ""
     var debname : String = " "
     var docname : String = " "
+    var date : String = " "
+    var placeofresidence = " "
+
 }

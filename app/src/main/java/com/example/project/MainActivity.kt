@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import com.example.project.model.patientsmodel
 
 
@@ -24,7 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         val P_NAME: EditText = findViewById(R.id.editName)
         val P_SSNO: EditText = findViewById(R.id.editIdNum)
+        val D_BIRTH : EditText = findViewById(R.id.editTextDate2)
         val spinnerDept: Spinner = findViewById(R.id.spChooseDept)
+        val Place_of_residence : EditText = findViewById(R.id.editTextTextMultiLine)
         var Dept = arrayOf(
             "Surgery" /*1200*/, "Orthopaedics"/*250*/, "Neurology", "Plastic Surgery",
             "Orthopaedic", "Cardiology"
@@ -91,14 +94,17 @@ class MainActivity : AppCompatActivity() {
             val patient : patientsmodel = patientsmodel()
             patient.pname = P_NAME.text.toString()
             patient.pssno = P_SSNO.text.toString().toInt()
-            //patient.docname =
+            patient.date = D_BIRTH.text.toString()
             patient.debname = spinnerDept.selectedItem.toString()
             patient.docname = spinnerDr.selectedItem.toString()
+            patient.placeofresidence = Place_of_residence.text.toString()
             success = dbhandler?.insertpatient(patient) as Boolean
             if(success)
                 Toast.makeText(this,"Inserted Successfully" , Toast.LENGTH_SHORT).show()
             else
                 Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
+
+
             val intent = Intent(this@MainActivity, SecondActivity::class.java)
             startActivity(intent)
         }
@@ -112,10 +118,16 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(this,"Patient Inserted Succesfully",Toast.LENGTH_SHORT).show()
 //        }
     }
-
-    private fun getpatients()
+// the implementation of the functions that should be assigned to buttons
+    private fun getpatients()//(ListPatients)
     {
-     patientlist = dbhandler!!.getPatients()
+     patientlist = dbhandler!!.getpatients()
 
     }
+    private fun deletep(SSnumber : Int):Boolean
+    {
+        return dbhandler!!.deletepatient(SSnumber)
+    }
+//    private fun
+
 }

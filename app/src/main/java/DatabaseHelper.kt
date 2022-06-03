@@ -35,7 +35,11 @@ class DatabaseHelper (context: Context, factory: SQLiteDatabase.CursorFactory?) 
 
         // below is the variable for age column
         val DoctorName = "name2"
+
         val DEPNAME = "name3"
+
+        val DOB = "12/5/2002"
+        val POR = " Amman "
     }
 
 
@@ -60,19 +64,23 @@ class DatabaseHelper (context: Context, factory: SQLiteDatabase.CursorFactory?) 
 //   //Toast.makeText(this,"Patient Inserted Successfully",Toast.LENGTH_SHORT).show()
 //    db.close()
 //
-fun insertpatient (patient:patientsmodel):Boolean
+fun insertpatient (patient:patientsmodel):Boolean //insert
 {
     val db = this.writableDatabase
     val values = ContentValues()
+    values.put(PatientSSNO,patient.pssno)
     values.put(DoctorName,patient.docname)
     values.put(DEPNAME,patient.debname)
     values.put(PatientName,patient.pname)
+    values.put(Patients,patient.date)
+    values.put(Patients,patient.placeofresidence)
     val success = db.insert(Patients,null,values)
     db.close()
     return (Integer.parseInt("$success") != -1 )
 }
 
-    fun getPatients():List<patientsmodel> {
+    fun getpatients():List<patientsmodel> //select all
+    {
 
         val patientlist = ArrayList<patientsmodel>()
         val db = writableDatabase
@@ -82,11 +90,12 @@ fun insertpatient (patient:patientsmodel):Boolean
             if (cursor.moveToFirst()) {
                 do {
                     val patients = patientsmodel()
-                    patients.pssno =
-                        Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(PatientSSNO)))
+                    patients.pssno = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(PatientSSNO)))
                     patients.pname = cursor.getString(cursor.getColumnIndexOrThrow(PatientName))
                     patients.debname = cursor.getString(cursor.getColumnIndexOrThrow(DEPNAME))
                     patients.docname = cursor.getString(cursor.getColumnIndexOrThrow(DoctorName))
+                    patients.date = cursor.getString(cursor.getColumnIndexOrThrow(DOB))
+                    patients.placeofresidence = cursor.getString(cursor.getColumnIndexOrThrow(POR))
                     patientlist.add(patients)
                 } while (cursor.moveToNext())
 
@@ -95,7 +104,7 @@ fun insertpatient (patient:patientsmodel):Boolean
         return patientlist
     }
 
-    fun selectpatient(pssnumber : Int): patientsmodel
+    fun selectpatient(pssnumber : Int): patientsmodel //select patient by Social security number
     {
         val patients = patientsmodel()
         val db = writableDatabase
@@ -106,24 +115,29 @@ fun insertpatient (patient:patientsmodel):Boolean
         patients.docname = cursor.getString(cursor.getColumnIndexOrThrow(DoctorName))
         patients.pssno = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(PatientSSNO)))
         patients.pname = cursor.getString(cursor.getColumnIndexOrThrow(PatientName))
+        patients.date = cursor.getString(cursor.getColumnIndexOrThrow(DOB))
+        patients.placeofresidence = cursor.getString(cursor.getColumnIndexOrThrow(POR))
         cursor.close()
         return patients
     }
-    fun deletepatient(pssno:Int):Boolean
+    fun deletepatient(pssno:Int):Boolean //delete patient
     {
         val db = this.writableDatabase
         val success = db.delete(Patients, PatientSSNO+"?=", arrayOf(pssno.toString()))
         return Integer.parseInt("$success") != -1
     }
-    fun updatepatientsdata(patients:patientsmodel):Boolean
+    fun updatepatients_data(patients:patientsmodel):Boolean // update patient informations
     {
         val db = this.writableDatabase
         val values=ContentValues()
         values.put(Patients,patients.pname)
         values.put(Patients,patients.docname)
         values.put(Patients,patients.debname)
+        values.put(Patients,patients.date)
+        values.put(Patients,patients.placeofresidence)
         val success = db.update(Patients,values, PatientSSNO +"=?", arrayOf(patients.pssno.toString())).toLong()
         db.close()
         return Integer.parseInt("$success") != -1
     }
-    }
+
+}
